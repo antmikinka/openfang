@@ -1337,9 +1337,9 @@ pub struct DefaultModelConfig {
 impl Default for DefaultModelConfig {
     fn default() -> Self {
         Self {
-            provider: "anthropic".to_string(),
-            model: "claude-sonnet-4-20250514".to_string(),
-            api_key_env: "ANTHROPIC_API_KEY".to_string(),
+            provider: "alibaba-coding".to_string(),
+            model: "qwen3.5-plus".to_string(),
+            api_key_env: "DASHSCOPE_API_KEY".to_string(),
             base_url: None,
         }
     }

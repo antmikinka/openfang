@@ -55,9 +55,9 @@ impl SetupWizard {
     pub fn build_plan(intent: AgentIntent) -> SetupPlan {
         // Map model tier to provider/model
         // Use "default" so the kernel applies config.toml's [default_model].
-        // Only "complex" tier gets an explicit Anthropic override.
+        // Only "complex" tier gets an explicit override (qwen3.5-plus).
         let (provider, model) = match intent.model_tier.as_str() {
-            "complex" => ("anthropic", "claude-sonnet-4-20250514"),
+            "complex" => ("alibaba-coding", "qwen3.5-plus"),
             _ => ("default", "default"),
         };
 
@@ -301,8 +301,8 @@ mod tests {
         intent.model_tier = "complex".to_string();
         let plan = SetupWizard::build_plan(intent);
 
-        assert_eq!(plan.manifest.model.provider, "anthropic");
-        assert!(plan.manifest.model.model.contains("sonnet"));
+        assert_eq!(plan.manifest.model.provider, "alibaba-coding");
+        assert!(plan.manifest.model.model.contains("qwen3.5"));
     }
 
     #[test]

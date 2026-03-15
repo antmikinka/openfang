@@ -29,6 +29,14 @@ struct ProviderInfo {
 
 const PROVIDERS: &[ProviderInfo] = &[
     ProviderInfo {
+        name: "alibaba-coding",
+        display: "Alibaba Cloud Coding Plan (Qwen Coder)",
+        env_var: "DASHSCOPE_API_KEY",
+        default_model: "qwen3.5-plus",
+        needs_key: true,
+        hint: "subscription - $0 metering",
+    },
+    ProviderInfo {
         name: "groq",
         display: "Groq",
         env_var: "GROQ_API_KEY",
@@ -142,8 +150,8 @@ const PROVIDERS: &[ProviderInfo] = &[
     },
     ProviderInfo {
         name: "qwen",
-        display: "Qwen (Alibaba)",
-        env_var: "QWEN_API_KEY",
+        display: "Qwen (Alibaba DashScope)",
+        env_var: "DASHSCOPE_API_KEY",
         default_model: "qwen-plus",
         needs_key: true,
         hint: "",
