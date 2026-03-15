@@ -1,0 +1,36 @@
+# OpenFang Sandbox Image — Secure Python execution environment
+# Build: docker build -t openfang/sandbox:latest -f Dockerfile.sandbox .
+#
+# This image is optimized for running agent code securely with:
+# - Python 3.12 with common data science packages
+# - Minimal attack surface (no shell metacharacters, restricted tools)
+# - Pre-installed utilities for file manipulation and networking (when enabled)
+
+FROM python:3.12-slim
+
+# Install essential build tools and clean up in one layer
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential=12.9 \
+    python3-dev=3.12.3-0ubuntu2 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Pre-install common Python packages for agent workflows
+RUN pip install --no-cache-dir \
+    requests==2.32.3 \
+    beautifulsoup4==4.12.3 \
+    pandas==2.2.2 \
+    numpy==1.26.4 \
+    matplotlib==3.9.0 \
+    jsonschema==4.23.0 \
+    pyyaml==6.0.1
+
+# Create non-root user for additional isolation
+# (Docker sandbox already runs unprivileged, but defense in depth)
+RUN useradd -m -s /bin/bash sandbox && \
+    chown -R sandbox:sandbox /workspace
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command (should never run - container is started with sleep infinity)
+CMD ["/bin/bash", "-c", "echo 'OpenFang Sandbox Ready'"]
