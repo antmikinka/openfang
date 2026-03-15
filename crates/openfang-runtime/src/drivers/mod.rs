@@ -13,7 +13,7 @@ pub mod openai;
 
 use crate::llm_driver::{DriverConfig, LlmDriver, LlmError};
 use openfang_types::model_catalog::{
-    AI21_BASE_URL, ANTHROPIC_BASE_URL, CEREBRAS_BASE_URL, COHERE_BASE_URL, DEEPSEEK_BASE_URL,
+    AI21_BASE_URL, ALIBABA_CODING_BASE_URL, ANTHROPIC_BASE_URL, CEREBRAS_BASE_URL, COHERE_BASE_URL, DEEPSEEK_BASE_URL,
     FIREWORKS_BASE_URL, GEMINI_BASE_URL, GROQ_BASE_URL, HUGGINGFACE_BASE_URL, LEMONADE_BASE_URL,
     LMSTUDIO_BASE_URL, MINIMAX_BASE_URL, MISTRAL_BASE_URL, MOONSHOT_BASE_URL, OLLAMA_BASE_URL,
     OPENAI_BASE_URL, OPENROUTER_BASE_URL, PERPLEXITY_BASE_URL, QIANFAN_BASE_URL, QWEN_BASE_URL,
@@ -151,6 +151,11 @@ fn provider_defaults(provider: &str) -> Option<ProviderDefaults> {
         }),
         "qwen" | "dashscope" => Some(ProviderDefaults {
             base_url: QWEN_BASE_URL,
+            api_key_env: "DASHSCOPE_API_KEY",
+            key_required: true,
+        }),
+        "alibaba-coding" => Some(ProviderDefaults {
+            base_url: ALIBABA_CODING_BASE_URL,
             api_key_env: "DASHSCOPE_API_KEY",
             key_required: true,
         }),
@@ -377,6 +382,7 @@ pub fn known_providers() -> &'static [&'static str] {
         "github-copilot",
         "moonshot",
         "qwen",
+        "alibaba-coding",
         "minimax",
         "zhipu",
         "zhipu_coding",
@@ -474,6 +480,7 @@ mod tests {
         assert!(providers.contains(&"github-copilot"));
         assert!(providers.contains(&"moonshot"));
         assert!(providers.contains(&"qwen"));
+        assert!(providers.contains(&"alibaba-coding"));
         assert!(providers.contains(&"minimax"));
         assert!(providers.contains(&"zhipu"));
         assert!(providers.contains(&"zhipu_coding"));
@@ -482,13 +489,13 @@ mod tests {
         assert!(providers.contains(&"codex"));
         assert!(providers.contains(&"claude-code"));
         assert!(providers.contains(&"lemonade"));
-        assert_eq!(providers.len(), 31);
+        assert_eq!(providers.len(), 32);
     }
 
     #[test]
     fn test_provider_defaults_lemonade() {
         let d = provider_defaults("lemonade").unwrap();
-        assert_eq!(d.base_url, "http://127.0.0.1:8000");
+        assert_eq!(d.base_url, "http://127.0.0.1:8000/v1");
         assert_eq!(d.api_key_env, "LEMONADE_API_KEY");
         assert!(!d.key_required);
     }

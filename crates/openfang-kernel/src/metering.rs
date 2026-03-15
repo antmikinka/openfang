@@ -366,6 +366,10 @@ fn estimate_cost_rates(model: &str) -> (f64, f64) {
     if model.contains("qwen-turbo") {
         return (0.30, 0.60);
     }
+    // Qwen3.5-Plus from Alibaba Cloud Coding Plan (included in subscription)
+    if model.contains("qwen3.5-plus") {
+        return (0.0, 0.0);
+    }
     if model.contains("qwen") {
         return (0.20, 0.60);
     }

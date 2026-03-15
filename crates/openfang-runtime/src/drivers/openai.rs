@@ -398,8 +398,18 @@ impl LlmDriver for OpenAIDriver {
                 .text()
                 .await
                 .map_err(|e| LlmError::Http(e.to_string()))?;
-            let oai_response: OaiResponse =
-                serde_json::from_str(&body).map_err(|e| LlmError::Parse(e.to_string()))?;
+
+            let oai_response: OaiResponse = match serde_json::from_str(&body) {
+                Ok(res) => res,
+                Err(e) => {
+                    warn!(
+                        error = %e,
+                        body = %body,
+                        "Failed to parse OpenAI-compatible response"
+                    );
+                    return Err(LlmError::Parse(e.to_string()));
+                }
+            };
 
             let choice = oai_response
                 .choices

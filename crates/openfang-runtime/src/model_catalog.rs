@@ -9,6 +9,7 @@ use openfang_types::model_catalog::{
     GEMINI_BASE_URL, GITHUB_COPILOT_BASE_URL, GROQ_BASE_URL, HUGGINGFACE_BASE_URL,
     LEMONADE_BASE_URL, LMSTUDIO_BASE_URL, MINIMAX_BASE_URL, MISTRAL_BASE_URL, MOONSHOT_BASE_URL, OLLAMA_BASE_URL,
     OPENAI_BASE_URL, OPENROUTER_BASE_URL, PERPLEXITY_BASE_URL, QIANFAN_BASE_URL, QWEN_BASE_URL,
+    ALIBABA_CODING_BASE_URL,
     REPLICATE_BASE_URL, SAMBANOVA_BASE_URL, TOGETHER_BASE_URL, VLLM_BASE_URL, VOLCENGINE_BASE_URL,
     XAI_BASE_URL, ZAI_BASE_URL, ZAI_CODING_BASE_URL, ZHIPU_BASE_URL, ZHIPU_CODING_BASE_URL,
 };
@@ -570,6 +571,15 @@ fn builtin_providers() -> Vec<ProviderInfo> {
             display_name: "Qwen (Alibaba)".into(),
             api_key_env: "DASHSCOPE_API_KEY".into(),
             base_url: QWEN_BASE_URL.into(),
+            key_required: true,
+            auth_status: AuthStatus::Missing,
+            model_count: 0,
+        },
+        ProviderInfo {
+            id: "alibaba-coding".into(),
+            display_name: "Alibaba Cloud Coding Plan".into(),
+            api_key_env: "DASHSCOPE_API_KEY".into(),
+            base_url: ALIBABA_CODING_BASE_URL.into(),
             key_required: true,
             auth_status: AuthStatus::Missing,
             model_count: 0,
@@ -2571,6 +2581,23 @@ fn builtin_models() -> Vec<ModelCatalogEntry> {
             aliases: vec![],
         },
         // ══════════════════════════════════════════════════════════════
+        // Alibaba Cloud Coding Plan (1)
+        // ══════════════════════════════════════════════════════════════
+        ModelCatalogEntry {
+            id: "qwen3.5-plus".into(),
+            display_name: "Qwen 3.5 Plus (Coding Plan)".into(),
+            provider: "alibaba-coding".into(),
+            tier: ModelTier::Smart,
+            context_window: 256_000,
+            max_output_tokens: 16_384,
+            input_cost_per_m: 0.0,  // Included in Coding Plan subscription
+            output_cost_per_m: 0.0,  // Included in Coding Plan subscription
+            supports_tools: true,
+            supports_vision: true,
+            supports_streaming: true,
+            aliases: vec!["qwen-coder".into(), "qwen3.5".into(), "alibaba-coding".into()],
+        },
+        // ══════════════════════════════════════════════════════════════
         // MiniMax (4)
         // ══════════════════════════════════════════════════════════════
         ModelCatalogEntry {
@@ -3089,7 +3116,7 @@ mod tests {
     #[test]
     fn test_catalog_has_providers() {
         let catalog = ModelCatalog::new();
-        assert_eq!(catalog.list_providers().len(), 34);
+        assert_eq!(catalog.list_providers().len(), 35);
     }
 
     #[test]
