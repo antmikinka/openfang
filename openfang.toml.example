@@ -6,10 +6,10 @@
 # api_listen = "127.0.0.1:50051"             # HTTP API bind address (use 0.0.0.0 for public)
 
 [default_model]
-provider = "anthropic"                    # "anthropic", "gemini", "openai", "groq", "ollama", "lemonade", etc.
-model = "claude-sonnet-4-20250514"        # Model identifier
-api_key_env = "ANTHROPIC_API_KEY"         # Environment variable holding API key
-# base_url = "https://api.anthropic.com"  # Optional: override API endpoint
+provider = "alibaba-coding"                 # "alibaba-coding", "anthropic", "gemini", "openai", "groq", etc.
+model = "qwen3.5-plus"                      # Qwen 3.5 Plus via Alibaba Cloud Coding Plan
+api_key_env = "DASHSCOPE_API_KEY"           # Environment variable holding API key (sk-sp-...)
+# base_url = "https://coding-intl.dashscope.aliyuncs.com/v1"  # Optional: override endpoint
 
 [memory]
 decay_rate = 0.05                         # Memory confidence decay rate
